@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="UTF-8">
+<title>Recipe Finder</title>
+
+<head>
+    <style>
+        body {
+            font-family: Arial;
+            padding: 20px;
+            background-color: #EEF6EE;
+        }
+
+        input,
+        button {
+            padding: 10px;
+            margin: 5px;
+            border-radius: 5px;
+            border: 1px solid green;
+            background-color: #1B462F;
+            color: #ffff;
+        }
+
+
+        #meals {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .meal {
+            border: 1px solid #1B462F;
+            padding: 10px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .meal img {
+            width: 70%;
+            border-radius: 10px;
+        }
+
+        .category-btns button {
+            margin: 2px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>🍲 Recipe Finder</h1>
+
+    <!-- Search Bar -->
+    <input type="text" id="searchInput" placeholder="Search any food...">
+    <button onclick="searchMeal()">Search</button>
+
+    <!-- Category Buttons -->
+    <div class="category-btns">
+        <button onclick="searchByCategory('Beef')">Beef</button>
+        <button onclick="searchByCategory('Chicken')">Chicken</button>
+        <button onclick="searchByCategory('Seafood')">Seafood</button>
+        <button onclick="searchByCategory('Dessert')">Dessert</button>
+    </div>
+
+    <!-- Meals Display -->
+    <div id="meals"></div>
+
+    <script src="./meal.js/api.js"></script>
+</body>
+
+</html>

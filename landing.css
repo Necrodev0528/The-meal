@@ -1,0 +1,148 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+/* ---------- GLOBAL ---------- */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 20px;
+  background-color: #eef6ee; /* soft background */
+  color: #1a1a1a;
+}
+
+/* ---------- HEADER / NAV ---------- */
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #2c6e49; /* deep green */
+  border-radius: 12px;
+  margin-bottom: 20px;
+  color: #fff;
+}
+
+nav .logo {
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+
+nav .user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+nav .user-info img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #fff;
+}
+
+nav .user-info span {
+  font-weight: 600;
+}
+
+/* ---------- SEARCH / CATEGORY ---------- */
+input#searchInput {
+  padding: 10px;
+  width: 60%;
+  max-width: 400px;
+  border-radius: 8px;
+  border: 1px solid #aaa;
+  margin-right: 5px;
+  font-size: 1rem;
+}
+
+button {
+  padding: 10px 15px;
+  background-color: #2c6e49;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.2s ease-in-out;
+}
+
+button:hover {
+  background-color: #1b462f;
+  transform: scale(1.05);
+}
+
+.category-btns {
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+.category-btns button {
+  margin: 3px;
+  background-color: #3a8c5e;
+}
+
+.category-btns button:hover {
+  background-color: #1b462f;
+}
+
+/* ---------- MEALS GRID ---------- */
+#meals {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.meal {
+  border: 1px solid #ddd;
+  padding: 10px;
+  border-radius: 12px;
+  text-align: center;
+  background-color: #fff;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.meal:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+}
+
+.meal img {
+  width: 100%;
+  border-radius: 12px;
+  margin-bottom: 10px;
+}
+
+.meal h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #2c6e49;
+}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 768px) {
+  input#searchInput {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  button {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  nav {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  nav .user-info span {
+    display: none; /* hide username on very small screens */
+  }
+}
