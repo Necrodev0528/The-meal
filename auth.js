@@ -1,36 +1,60 @@
-// SIGNUP
-function signup(e){
-  e.preventDefault();
-  const username = document.getElementById("signupUsername").value;
-  const password = document.getElementById("signupPassword").value;
-  const profile = document.getElementById("signupProfile").value || "https://via.placeholder.com/30";
-  const user = { username,password,profile };
-  localStorage.setItem("user",JSON.stringify(user));
-  alert("Signup successful!");
-  window.location.href = "login.html";
-}
+console.log("auth.js loaded");
 
-// LOGIN
-function login(e){
-  e.preventDefault();
-  const username = document.getElementById("loginUsername").value;
-  const password = document.getElementById("loginPassword").value;
-  const savedUser = JSON.parse(localStorage.getItem("user"));
-  if(!savedUser){ alert("No account found. Please sign up."); return; }
-  if(username===savedUser.username && password===savedUser.password){
-    localStorage.setItem("loggedInUser",JSON.stringify(savedUser));
+/* ================= SIGNUP ================= */
+const signupForm = document.getElementById("signupForm");
+
+if (signupForm) {
+  signupForm.addEventListener("submit", function (e) {
+    e.preventDefault(); // 🔥 STOP PAGE RELOAD
+
+    const username = document.getElementById("signupUsername").value.trim();
+    const password = document.getElementById("signupPassword").value.trim();
+
+    if (!username || !password) {
+      alert("Please fill in all fields");
+      return;
+    }
+
+    let users = JSON.parse(localStorage.getItem("users")) || [];
+
+    // Check if username already exists
+    const userExists = users.find(user => user.username === username);
+    if (userExists) {
+      alert("Username already exists ❌");
+      return;
+    }
+
+    users.push({ username, password });
+    localStorage.setItem("users", JSON.stringify(users));
+
+    alert("Signup successful ✅");
+    window.location.href = "login.html";
+  });
+}
+/* ================= LOGIN ================= */
+const loginForm = document.getElementById("loginForm");
+
+if (loginForm) {
+  loginForm.addEventListener("submit", function (e) {
+    e.preventDefault(); // 🔥 STOP PAGE RELOAD
+
+    const username = document.getElementById("loginUsername").value.trim();
+    const password = document.getElementById("loginPassword").value.trim();
+
+    let users = JSON.parse(localStorage.getItem("users")) || [];
+
+    const foundUser = users.find(
+      user => user.username === username && user.password === password
+    );
+
+    if (!foundUser) {
+      alert("Invalid username or password ❌");
+      return;
+    }
+
+    localStorage.setItem("loggedInUser", JSON.stringify(foundUser));
+    alert("Login successful ✅");
+
     window.location.href = "home.html";
-  } else alert("Invalid login details");
-}
-
-// LOGOUT
-const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
-if(!loggedInUser) window.location.href="login.html";
-
-document.getElementById("navUsername").textContent = loggedInUser.username;
-document.getElementById("navImg").src = loggedInUser.profile || "https://via.placeholder.com/35";
-
-function logout(){
-  localStorage.removeItem("loggedInUser");
-  window.location.href="login.html";
+  });
 }

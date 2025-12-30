@@ -1,48 +1,52 @@
+const recipesDiv = document.getElementById("recipes");
 
+/* ================= SEARCH MEALS ================= */
+async function searchMeal() {
+  const query = document.getElementById("searchInput").value.trim();
 
-const recipeContainer=document.getElementById("recipeContainer");
-const bookmarks=JSON.parse(localStorage.getItem("bookmarks_"+loggedInUser.username))||[];
+  if (!query) {
+    alert("Enter a food name");
+    return;
+  }
 
-function displayRecipes(meals){
-  recipeContainer.innerHTML="";
-  meals.forEach(meal=>{
-    const card=document.createElement("div");
-    card.className="recipe-card";
-    const bookmarked = bookmarks.find(b=>b.idMeal===meal.idMeal);
-    card.innerHTML=`
-      <img src="${meal.strMealThumb}" alt="${meal.strMeal}">
-      <h3>${meal.strMeal}</h3>
-      <p>${meal.strInstructions.substring(0,100)}...</p>
-      <button class="bookmark-btn">${bookmarked?"Bookmarked":"Bookmark"}</button>
+  const res = await fetch(
+    `https://www.themealdb.com/api/json/v1/1/search.php?s=${query}`
+  );
+
+  const data = await res.json();
+
+  recipesDiv.innerHTML = "";
+
+  if (!data.meals) {
+    recipesDiv.innerHTML = "<p>No food found 😢</p>";
+    return;
+  }
+
+  data.meals.forEach(meal => {
+    recipesDiv.innerHTML += `
+      <div class="recipe-card">
+        <img src="${meal.strMealThumb}" alt="${meal.strMeal}">
+        <h3>${meal.strMeal}</h3>
+        <button onclick="viewMeal('${meal.idMeal}')">View</button>
+      </div>
     `;
-    card.querySelector(".bookmark-btn").onclick=()=>{
-      let allBookmarks = JSON.parse(localStorage.getItem("bookmarks_"+loggedInUser.username)) || [];
-      if(allBookmarks.find(b=>b.idMeal===meal.idMeal)){
-        allBookmarks = allBookmarks.filter(b=>b.idMeal!==meal.idMeal);
-        card.querySelector(".bookmark-btn").textContent="Bookmark";
-      }else{
-        allBookmarks.push(meal);
-        card.querySelector(".bookmark-btn").textContent="Bookmarked";
-      }
-      localStorage.setItem("bookmarks_"+loggedInUser.username, JSON.stringify(allBookmarks));
-    };
-    recipeContainer.appendChild(card);
   });
 }
 
-// Initial fetch
-fetch("https://www.themealdb.com/api/json/v1/1/search.php?s=")
-  .then(res=>res.json())
-  .then(data=>{ if(data.meals) displayRecipes(data.meals); });
+/* ================= VIEW FULL RECIPE ================= */
+async function viewMeal(id) {
+  const res = await fetch(
+    `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`
+  );
 
-// Search function
-function searchRecipes(){
-  const query=document.getElementById("searchInput").value.trim();
-  if(!query) return;
-  fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${query}`)
-    .then(res=>res.json())
-    .then(data=>{
-      if(data.meals) displayRecipes(data.meals);
-      else recipeContainer.innerHTML="<p style='text-align:center;margin-top:20px;'>No recipes found</p>";
-    });
+  const data = await res.json();
+  const meal = data.meals[0];
+
+  alert(`Ingredients and steps are available 😎`);
+}
+
+/* ================= LOGOUT ================= */
+function logout() {
+  localStorage.removeItem("loggedInUser");
+  window.location.href = "login.html";
 }
